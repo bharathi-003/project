@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import "./index.css";
 
 import AuthForm from "./components/Auth/AuthForm";
 import DoctorList from "./components/Doctor/DoctorList";
@@ -7,13 +8,10 @@ import AppointmentForm from "./components/Appointment/AppointmentForm";
 import Dashboard from "./components/Dashboard/Dashboard";
 import FileList from "./components/Files/FileList";
 
-import drA from "./assets/doctors/drA.jpg";
-import drB from "./assets/doctors/drB.jpg";
-
 function App() {
   const [doctors] = useState([
-    { id: 1, name: "Dr. A", specialty: "Cardiologist", experience: 10, fees: 500, rating: 4.5, photo: drA },
-    { id: 2, name: "Dr. B", specialty: "Dermatologist", experience: 7, fees: 400, rating: 4.2, photo: drB },
+    { id: 1, name: "Dr. A", specialty: "Cardiologist", experience: 10, fees: 500, rating: 4.5 },
+    { id: 2, name: "Dr. B", specialty: "Dermatologist", experience: 7, fees: 400, rating: 4.2 },
   ]);
 
   const [appointments, setAppointments] = useState([]);
@@ -25,6 +23,7 @@ function App() {
   };
 
   const handleDownload = (file) => alert(`Downloading ${file.name}`);
+  const handleAuth = (data) => alert(`Submitted: ${JSON.stringify(data)}`);
 
   return (
     <Router>
@@ -36,7 +35,7 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<AuthForm mode="login" userType="patient" />} />
+        <Route path="/" element={<AuthForm mode="login" userType="patient" onSubmit={handleAuth} />} />
         <Route path="/doctors" element={<DoctorList doctors={doctors} onBook={handleBooking} />} />
         <Route path="/book/:doctorId" element={<AppointmentForm doctor={doctors[0]} onSubmit={handleBooking} />} />
         <Route path="/dashboard" element={<Dashboard userType="patient" appointments={appointments} records={files} />} />
